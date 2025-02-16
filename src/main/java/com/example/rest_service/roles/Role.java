@@ -1,4 +1,4 @@
-package com.example.rest_service.security.postgresql.models;
+package com.example.rest_service.roles;
 
 import jakarta.persistence.*;
 
