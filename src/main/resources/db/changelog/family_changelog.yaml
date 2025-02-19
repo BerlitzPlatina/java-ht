@@ -1,7 +1,7 @@
 databaseChangeLog:
  - changeSet:
      id: 1
-     author: Nemo
+     author: Nam
      preConditions:
        - onFail: MARK_RAN
          not:
