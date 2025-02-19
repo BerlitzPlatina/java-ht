@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Nam
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: user_role
+      changes:
+        - createTable:
+            tableName: user_role
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            clustered:  true
+            columnNames:  user_id, role_id
+            constraintName:  pk_user_role
+            forIndexName:  idx_user_role
+            schemaName:  public
+            tableName:  user_role
+            validate:  true
+        - addForeignKeyConstraint:
+            baseColumnNames:  user_id
+            baseTableName:  user_role
+            baseTableSchemaName:  public
+            constraintName:  fk_user_id
+            deferrable:  true
+            initiallyDeferred:  true
+            onDelete:  CASCADE
+            onUpdate:  RESTRICT
+            referencedColumnNames:  id
+            referencedTableName:  users
+            referencedTableSchemaName:  public
+            validate:  true
+        - addForeignKeyConstraint:
+            baseColumnNames:  role_id
+            baseTableName:  user_role
+            baseTableSchemaName:  public
+            constraintName:  fk_role_id
+            deferrable:  true
+            initiallyDeferred:  true
+            onDelete:  CASCADE
+            onUpdate:  RESTRICT
+            referencedColumnNames:  id
+            referencedTableName:  roles
+            referencedTableSchemaName:  public
+            validate:  true

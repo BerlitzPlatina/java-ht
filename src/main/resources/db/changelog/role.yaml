@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Nam
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: roles
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValue: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValue: "NOW()"
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: Nam
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "user"
+              - column:
+                  name: code
+                  value: "user"                  
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "mod"
+              - column:
+                  name: code
+                  value: "mod"
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "admin"
+              - column:
+                  name: code
+                  value: "admin"
