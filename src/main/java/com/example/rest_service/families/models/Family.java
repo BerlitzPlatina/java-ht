@@ -1,4 +1,4 @@
-package com.example.rest_service.genealogy.models;
+package com.example.rest_service.families.models;
 
 import java.util.Date;
 
@@ -9,9 +9,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "families")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Family {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,9 +58,6 @@ public class Family {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Family() {
     }
 
     public Family(Integer id, String name) {
