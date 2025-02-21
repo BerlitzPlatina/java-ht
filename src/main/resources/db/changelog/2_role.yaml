@@ -49,7 +49,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "user"
+                  value: "ROLE_USER"
               - column:
                   name: code
                   value: "user"                  
@@ -58,7 +58,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "mod"
+                  value: "ROLE_MODERATOR"
               - column:
                   name: code
                   value: "mod"
@@ -67,7 +67,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "admin"
+                  value: "ROLE_ADMIN"
               - column:
                   name: code
                   value: "admin"
