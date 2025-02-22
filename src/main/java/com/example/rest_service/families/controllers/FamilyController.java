@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.rest_service.families.dto.FamilyDto;
+import com.example.rest_service.families.dto.FamilyResponseDto;
 import com.example.rest_service.families.models.Family;
 import com.example.rest_service.families.services.FamilyService;
+
+import utils.response.HtResponseEntity;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -23,7 +28,7 @@ public class FamilyController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Family>> getFamilies(@RequestParam(required = false) String name,
+    public ResponseEntity<Page<FamilyResponseDto>> getFamilies(@RequestParam(required = false) String name,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String role,
             @PageableDefault(size = 10, sort = "name") Pageable pageable) {

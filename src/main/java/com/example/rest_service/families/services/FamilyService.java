@@ -20,8 +20,7 @@ public class FamilyService {
 
     public Page<FamilyResponseDto> getFamilies(String name, String status, String role,
             Pageable pageable) {
-        Specification<FamilyResponseDto> spec =
-                FamilySpecification.filterFamilies(name, status, role);
-        return familyRepository.findAll(spec, pageable);
+        Specification<Family> spec = FamilySpecification.filterFamilies(name, status, role);
+        return familyRepository.findAll(spec, pageable).map(FamilyResponseDto::fromEntity);
     }
 }
