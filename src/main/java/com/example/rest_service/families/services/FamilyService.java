@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import com.example.rest_service.families.dto.FamilyRequestDto;
 import com.example.rest_service.families.dto.FamilyResponseDto;
 import com.example.rest_service.families.models.Family;
 import com.example.rest_service.families.repositores.FamilyRepository;
@@ -18,9 +20,14 @@ public class FamilyService {
         this.familyRepository = familyRepository;
     }
 
-    public Page<FamilyResponseDto> getFamilies(String name, String status, String role,
-            Pageable pageable) {
-        Specification<Family> spec = FamilySpecification.filterFamilies(name, status, role);
-        return familyRepository.findAll(spec, pageable).map(FamilyResponseDto::fromEntity);
+    public Page<FamilyResponseDto> getFamilies(FamilyRequestDto familyRequestDto) {
+        Specification<Family> spec = FamilySpecification.filterFamilies(familyRequestDto.getName());
+        return familyRepository.findAll(spec, familyRequestDto.getPageable()).map(FamilyResponseDto::fromEntity);
+    }
+
+    public Family createFamily(FamilyRequestDto familyRequestDto) {
+        Family family = new Family();
+        family.setName(familyRequestDto.getName());
+        return familyRepository.save(family);
     }
 }

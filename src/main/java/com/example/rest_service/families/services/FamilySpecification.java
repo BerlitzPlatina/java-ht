@@ -8,8 +8,7 @@ import com.example.rest_service.families.models.Family;
 import jakarta.persistence.criteria.Predicate;
 
 public class FamilySpecification {
-    public static Specification<Family> filterFamilies(String name, String status,
-            String role) {
+    public static Specification<Family> filterFamilies(String name) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
