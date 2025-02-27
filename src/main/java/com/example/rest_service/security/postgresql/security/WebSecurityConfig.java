@@ -18,6 +18,9 @@ import com.example.rest_service.security.postgresql.security.jwt.AuthTokenFilter
 import com.example.rest_service.security.postgresql.security.jwt.JwtUtils;
 import com.example.rest_service.security.postgresql.security.services.UserDetailsServiceImpl;
 
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.MediaType;
+
 @Configuration
 @EnableMethodSecurity
 public class WebSecurityConfig {
@@ -26,15 +29,13 @@ public class WebSecurityConfig {
   private final AuthEntryPointJwt unauthorizedHandler;
   private final JwtUtils jwtUtils;
 
-  // ✅ Constructor Injection (Best Practice)
-  public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler,
-      JwtUtils jwtUtils) {
+  public WebSecurityConfig(UserDetailsServiceImpl userDetailsService,
+      AuthEntryPointJwt unauthorizedHandler, JwtUtils jwtUtils) {
     this.userDetailsService = userDetailsService;
     this.unauthorizedHandler = unauthorizedHandler;
     this.jwtUtils = jwtUtils;
   }
 
-  // ✅ Corrected: Pass `JwtUtils` & `UserDetailsServiceImpl` to AuthTokenFilter
   @Bean
   public AuthTokenFilter authTokenFilter() {
     return new AuthTokenFilter(jwtUtils, userDetailsService);
@@ -49,7 +50,8 @@ public class WebSecurityConfig {
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
+      throws Exception {
     return authConfig.getAuthenticationManager();
   }
 
@@ -61,17 +63,20 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/api/test/**").permitAll()
-            .anyRequest().authenticated());
+        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)
+            .accessDeniedHandler((request, response, accessDeniedException) -> {
+              response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+              response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+              response.getWriter().write(
+                  "{\"status\":403, \"error\":\"Forbidden\", \"message\":\"Access Denied\"}");
+              response.getWriter().flush();
+            }))
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/test/**").permitAll().anyRequest().authenticated());
 
     http.authenticationProvider(authenticationProvider());
-
-    // ✅ Corrected: Use `authTokenFilter()` instead of
-    // `authenticationJwtTokenFilter()`
     http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

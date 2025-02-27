@@ -23,9 +23,14 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
   private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
   @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-      throws IOException, ServletException {
-    logger.error("Unauthorized error: {}", authException.getMessage());
+  public void commence(HttpServletRequest request, HttpServletResponse response,
+      AuthenticationException authException) throws IOException {
+    logger.error("AuthEntryPointJwt triggered. Current response status: {}", response.getStatus());
+
+    if (response.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
+      logger.info("Skipping modification since response is already 404");
+      return;
+    }
 
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -37,9 +42,8 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     body.put("path", request.getServletPath());
 
     final ObjectMapper mapper = new ObjectMapper();
-    mapper.writeValue(response.getOutputStream(), body);
-
-//    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+    response.getWriter().write(mapper.writeValueAsString(body));
+    response.getWriter().flush();
+    response.getWriter().close();
   }
-
 }
