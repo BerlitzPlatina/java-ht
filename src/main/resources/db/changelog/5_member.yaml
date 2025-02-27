@@ -1,0 +1,92 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: Nam
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: members
+      changes:
+        - createTable:
+            tableName: members
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: family_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false    
+              - column:
+                  name: parent_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true                   
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValue: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValue: "NOW()"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+
+        - addForeignKeyConstraint:
+            baseColumnNames:  family_id
+            baseTableName:  members
+            baseTableSchemaName:  public
+            constraintName:  fk_family_id
+            deferrable:  true
+            initiallyDeferred:  true
+            onDelete:  CASCADE
+            onUpdate:  RESTRICT
+            referencedColumnNames:  id
+            referencedTableName:  families
+            referencedTableSchemaName:  public
+            validate:  true
+        - addForeignKeyConstraint:
+            baseColumnNames:  parent_id
+            baseTableName:  members
+            baseTableSchemaName:  public
+            constraintName:  fk_parent_id
+            deferrable:  true
+            initiallyDeferred:  true
+            onDelete:  CASCADE
+            onUpdate:  RESTRICT
+            referencedColumnNames:  id
+            referencedTableName:  members
+            referencedTableSchemaName:  public
+            validate:  true
+        - addForeignKeyConstraint:
+            baseColumnNames:  user_id
+            baseTableName:  members
+            baseTableSchemaName:  public
+            constraintName:  fk_user_id
+            deferrable:  true
+            initiallyDeferred:  true
+            onDelete:  CASCADE
+            onUpdate:  RESTRICT
+            referencedColumnNames:  id
+            referencedTableName:  users
+            referencedTableSchemaName:  public
+            validate:  true
