@@ -11,7 +11,6 @@ spring.jpa.properties.hibernate.default_schema=public
 # Hibernate ddl auto (create, create-drop, validate, update)
 spring.jpa.hibernate.ddl-auto=none
 spring.jpa.generate-ddl=false
-spring.jpa.hibernate.show-sql=true
 
 # App Properties
 bezkoder.app.jwtSecret= ======================BezKoder=Spring===========================
@@ -22,6 +21,8 @@ spring.liquibase.change-log=classpath:/db/db.changelog-master.yaml
 # liquibase.errorOnCircularIncludeAll=false
 # spring.liquibase.enabled=true
 
+# SQL Logging
+spring.jpa.hibernate.show-sql=true
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate.SQL=DEBUG
 logging.level.org.hibernate.type.descriptor.sql=TRACE
@@ -30,3 +31,4 @@ spring.jpa.properties.hibernate.format_sql=true
 # mvn clean spring-boot:run
 # mvn clean install liquibase:diff -DskipTests=true
 # mvn liquibase:update
+# mvn liquibase:clearCheckSums

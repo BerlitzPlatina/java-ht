@@ -32,7 +32,12 @@ databaseChangeLog:
                   name: parent_id
                   type: BIGINT
                   constraints:
-                    nullable: true                   
+                    nullable: true
+              - column:
+                  name: husband_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true                    
               - column:
                   name: created_at
                   type: TIMESTAMP
@@ -69,6 +74,19 @@ databaseChangeLog:
             baseTableName:  members
             baseTableSchemaName:  public
             constraintName:  fk_parent_id
+            deferrable:  true
+            initiallyDeferred:  true
+            onDelete:  CASCADE
+            onUpdate:  RESTRICT
+            referencedColumnNames:  id
+            referencedTableName:  members
+            referencedTableSchemaName:  public
+            validate:  true
+        - addForeignKeyConstraint:
+            baseColumnNames:  husband_id
+            baseTableName:  members
+            baseTableSchemaName:  public
+            constraintName:  fk_husband_id
             deferrable:  true
             initiallyDeferred:  true
             onDelete:  CASCADE

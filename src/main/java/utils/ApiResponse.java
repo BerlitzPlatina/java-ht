@@ -1,31 +1,31 @@
 package utils;
 
 public class ApiResponse<T> {
-    private T data;
+    private T content;
     private boolean success;
     private String message;
     private String errorDetails;
 
-    public ApiResponse(T data, boolean success, String message) {
-        this.data = data;
+    public ApiResponse(T content, boolean success, String message) {
+        this.content = content;
         this.success = success;
         this.message = message;
     }
 
-    public ApiResponse(T data, boolean success, String message, String errorDetails) {
-        this.data = data;
+    public ApiResponse(T content, boolean success, String message, String errorDetails) {
+        this.content = content;
         this.success = success;
         this.message = message;
         this.errorDetails = errorDetails;
     }
 
     // Getters and setters
-    public T getData() {
-        return data;
+    public T getContent() {
+        return content;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setContent(T content) {
+        this.content = content;
     }
 
     public boolean isSuccess() {

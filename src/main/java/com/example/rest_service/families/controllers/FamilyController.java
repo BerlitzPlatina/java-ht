@@ -15,6 +15,7 @@ import com.example.rest_service.families.dto.FamilyRequestDto;
 import com.example.rest_service.families.dto.FamilyResponseDto;
 import com.example.rest_service.families.models.Family;
 import com.example.rest_service.families.services.FamilyService;
+import utils.response.HtResponseEntity;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -27,7 +28,8 @@ public class FamilyController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<FamilyResponseDto>> getFamilies(@ModelAttribute FamilyRequestDto familyRequestDto) {
+    public ResponseEntity<Page<FamilyResponseDto>> getFamilies(
+            @ModelAttribute FamilyRequestDto familyRequestDto) {
         return ResponseEntity.ok(familyService.getFamilies(familyRequestDto));
     }
 
@@ -37,7 +39,7 @@ public class FamilyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Family> getFamilyById(@PathVariable Long id) {
-        return ResponseEntity.ok(familyService.findById(id));
+    public HtResponseEntity<Family> getFamilyById(@PathVariable Long id) {
+        return HtResponseEntity.success(familyService.findById(id));
     }
 }
